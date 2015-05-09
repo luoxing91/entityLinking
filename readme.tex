@@ -1,0 +1,48 @@
+\documentclass{article}
+\begin{document}
+
+
+
+entity linking encompass a set of similar task, which include Named Entity 
+Disambiguation , that is the task of linking entity mentions in a text to
+a knowlege base.         the automatic annotation of text by linking its relevant fragments of text to the appropriate wikipedia. 
+
+some focus on linking only named entities , whereas others attempt to link
+all interesting expression. 
+
+D2W : along with expicitly identified substrings to disambiguate, 
+    the goal is to  output the corresponding wikipedia page for each mention.
+
+Local D2W , disambiguate each mention in a document , utilizing clues such
+as the textual similarity between the document and each candidate disambiguation's wikipedia page .
+
+given a document $d$ with  a set of mentions $M = \{m_1,\ldots,m_N\}$,
+to produce a mapping from the  set of mentions to the set of Wikipedia title
+$W = \{ t_1,\ldots,t_|W|\} $ , if mentions correspond to a concept without a wikipedia page; we 
+
+let $\phi(m_i, t_j)$ be a score function reflecting the likelihood .
+a local approach solves the following optimization problem . 
+\[ T = arg max \sum_{i=1}{N} \phi(m_i,t_i) \]
+
+\[T* = arg max \sum_{i=1}{N}[ \phi(m_i,t_i) +  \sum{t_j \in T} sim(t_i,t_j) \]
+ 
+We represent the function $\phi$ as weighted sums of feature. 
+\[ \phi(m,t) = \sum_{i} w_i \phi_i(m,t) \] 
+each feature $\phi_i(m,t)$ captures some aspect of the relatedness between the 
+mention $m$ and the wikipedia title $t$. 
+
+the coefficients w_i are learned using a Support Vector machine. 
+
+\begin{algorithm}
+  \Input{doc, Mentions }
+  \OutPut{ a disambiguation T}
+  M^' = M U { other potential mentions in d}
+  foreach(m \in M^')
+    construct a set of disambiguation candidates T
+  Ranker: Find a solution T where $t_i$ is the best non-null disambiguation of
+  m_i'.
+  Linker: for each m_i^' map t' to null in if doing so improves the objective function. 
+  Return T entries for the original mentions M.
+
+\end{algorithm}
+\end{document}

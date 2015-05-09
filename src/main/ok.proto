@@ -1,0 +1,8 @@
+package models;
+option java_package = "tk.luoxing123.models";
+option java_outer_classname = "WikipediaProtobuffers";
+message Person {
+  required string name = 1;
+  required int32 id = 2;
+  optional string email = 3;
+}

@@ -1,0 +1,62 @@
+package models;
+option java_package = "tk.luoxing123.models";
+option java_outer_classname = "WikipediaProtobuffers";
+message SurfaceFormSummaryProto{
+    required double ambiguity = 1;
+    required int32 totalAppearanceCount = 2;
+    required int32 linkedAppearanceCount = 3;
+    repeated int32 titleIds = 4;
+    repeated double conditionalTitleProb = 5;
+    repeated double conditionalTitleAppearances = 6;
+    repeated double conditionalSurfaceFormProb = 7;
+    required double logProbOnWebGoogle = 8;
+}
+message WikipediaSummaryProto{
+    required int32 numberOfTitles = 1;
+    repeated string tokens = 2;
+    repeated int32 tokenFids = 3;
+    repeated int32 tokensIdfCounts = 4;
+    repeated string possibleCoarseNerTypes = 5;
+    repeated int32 possibleCoarseNerTypesIds = 6;
+    repeated string possibleTopics = 7;
+    repeated int32 possibleTopicsIds = 8;
+    repeated string unnormalizedCategoryTokens = 9;
+    repeated string mappingToNormalizedCategoryTokenVersion = 10;
+    repeated string normalizedCategoryTokens = 11;
+    repeated int32 normalizedCategoryTokensIds = 12;
+}
+message WikiDataSummaryProto {
+    required int32 numberOfTitles = 1;      
+    repeated string tokens = 2;
+    repeated int32 tokenFids = 3;
+    repeated int32 tokensIdfCounts = 4;
+    repeated string possibleCoarseNerTypes = 5;
+    repeated int32 possibleCoarseNerTypesIds = 6;
+    repeated string possibleTopics = 7;
+    repeated int32 possibleTopicsIds = 8;
+    repeated string unnormalizedCategoryTokens = 9;
+    repeated string mappingToNormalizedCategoryTokenVersion = 10;
+    repeated string normalizedCategoryTokens = 11;
+    repeated int32 normalizedCategoryTokensIds = 12;    
+}
+message LexicalTitleDataInfoProto{
+    repeated int32 textTokensFids = 1;
+    repeated double textTokensFidsWeights = 2;
+    repeated int32 contextTokensFids = 3;
+    repeated double contextTokensFidsWeights = 4;
+}
+message SemanticTitleDataInfoProto{
+    repeated int32 normalizedCategoryTokensIds = 1;
+    repeated int32 categoryIds = 2;
+    repeated int32 incomingLinksIds = 3;
+    repeated int32 outgoingLinksIds = 4;
+}
+message BasicTitleDataInfoProto{
+    required int32 titleId = 1;
+    required string titleSurfaceForm = 2;
+    required int32 titleAppearanceCount = 3;
+    required int32 numberOfOugoingLinks = 4;
+    required int32 numberOfIngoingLinks = 5;
+    repeated int32 coarseNerTypesIds = 6;
+    repeated int32 topicsIds = 7;
+}
