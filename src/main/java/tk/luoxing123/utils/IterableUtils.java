@@ -16,6 +16,9 @@ public class IterableUtils {
 		return () -> iter;
 		
 	}
+    public static List<FileInputStream> folderToFileList(File folder){
+        return toList(toIterable(folderToFileIterator(folder)));
+    }
 	public static Iterator<FileInputStream> folderToFileIterator(File folder) {
 		boolean hasfolder = folder.exists();
 		if (!hasfolder) {

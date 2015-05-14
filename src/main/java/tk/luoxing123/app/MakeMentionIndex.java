@@ -26,8 +26,8 @@ import org.xml.sax.SAXException;
 import tk.luoxing123.corpus.ArticleCollection;
 import tk.luoxing123.corpus.Mention;
 import tk.luoxing123.entitylink.MentionFactory;
-import tk.luoxing123.utils.Files;
 import tk.luoxing123.utils.IndexWriterHelp;
+import tk.luoxing123.utils.IterableUtils;
 class IndexMaker{
 	public IndexMaker(String str) throws IOException{
 		this.help= new IndexWriterHelp(str);
@@ -57,8 +57,7 @@ class IndexMaker{
 class ArticleCollectionIterator
 	implements Iterator<ArticleCollection>{
 	public ArticleCollectionIterator(File folder){
-		List<FileInputStream> files= Files.folderToFileIterator(folder);
-		this.iterator = files.iterator();
+		this.iterator = IterableUtils.folderToFileIterator(folder);
 	}
 	private Iterator<FileInputStream> iterator;
 	public boolean hasNext(){
@@ -66,40 +65,25 @@ class ArticleCollectionIterator
 	}
 	public ArticleCollection next(){
 		while(iterator.hasNext()){
-			FileInputStream file=iterator.next();
-			SequenceInputStream seq=makeSequenceInputStream(file);
+            SequenceInputStream seq=makeSequenceInputStream(iterator.next());
 			try{
 				Optional<Document> odoc = makeXmlDocument(seq);
 				ArticleCollection arts = new ArticleCollection(odoc.get());
 				return arts;
-				}catch(SAXException e){
+            }catch(SAXException e){
 				continue;
 			}
-			}
+        }
 		return null;
 	}
 	public void remove(){}
 	public static List<ArticleCollection>
 		toArticleCollectionList(File folder){
-		List<ArticleCollection> lst = new ArrayList<>();
-		List<FileInputStream> files = Files.folderToFileIterator(folder);
-		int count=0;
-		for(FileInputStream in: files){
-			SequenceInputStream seq = makeSequenceInputStream(in);
-			try{
-				Optional<Document> odoc = makeXmlDocument(seq);
-				if(odoc.isPresent()) {
-					ArticleCollection arts = new ArticleCollection(odoc.get());
-					lst.add(arts);
-					System.out.println(arts);
-				}
-				
-			}catch(SAXException e)	{
-				//e.printStackTrace();
-				count++;
-			}
-		}
-		System.out.println(count +"/"+files.size());
+        List<AritcleCollection> lst = new ArrayList<ArticleCollection>();
+        Iterator<ArticleCollection> iter = new ArticleColection(folder);
+        for(ArticleColection arts : () -> iter){
+            lst.add(arts);
+        }
 		return lst;
 	}
 	//----------------------------------------------------------------------
