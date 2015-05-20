@@ -47,6 +47,15 @@
 
 (require '[clojure.data.xml :as xml])
 
+(defn words [text] (re-seq #"[a-z]+" (.toLowerCase text)))
+(defn train [features]
+  (reduce (fn [model f] (assoc model f (inc (get model f 1))))
+          {}
+          features))
+
+
+
+
 
 
 (defn write-document-index [doc-lst directory ]
