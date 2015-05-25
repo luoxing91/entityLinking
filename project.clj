@@ -8,8 +8,9 @@
                  [org.apache.lucene/lucene-analyzers-common "5.1.0"]
                  [org.apache.lucene/lucene-queryparser "5.1.0"]
                  [org.apache.lucene/lucene-suggest "5.1.0"]
-                 [tk.luoxing123.utils/EntityLinking "1.0-SNAPSHOT"]
-                 [cider/cider-nrepl "0.9.0-SNAPSHOT"]]
+                 [cider/cider-nrepl "0.9.0-SNAPSHOT"]
+                 [clojurewerkz/titanium "1.0.0-beta1"]
+                 [org.clojure/data.csv "0.1.2"]]
   
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
