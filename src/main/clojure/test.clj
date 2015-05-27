@@ -1,73 +1,46 @@
 (ns tk.luoxing123.clojure
-  ;(:refer-clojure
   (:require (clojure [string :as string]
                      [set :as set])
-           )
+            [clojure.data.xml :as xml])
   (:import (java.util ArrayList Date)
            (java.io File)
-           (org.apache.lucene  document.Document
-                             index.IndexReader
-                             store.FSDirectory
-                             store.Directory
-                             index.DirectoryReader)
+           org.apache.commons.io.FileUtils
+           (org.apache.lucene.store
+            FSDirectory Directory)
+           (org.apache.lucene.document
+            Document Field Field$Store LongField StringField DoubleField)
+           (org.apache.lucene.index
+            IndexWriter IndexWriterConfig$OpenMode DirectoryReader
+            IndexWriterConfig Directory)
+           org.apache.lucene.util.Version
            tk.luoxing123.corpus.goldCollection
            (tk.luoxing123.utils LuceneDocIterator)
-           (tk.luoxing123.graph Graph NodeFactory) )
-  )
+           tk.luoxing123.entitylink.MentionFactory
+           (tk.luoxing123.graph Graph Graph NodeFactory)
+           (org.apache.lucene.search
+            IndexSearcher Query ScoreDoc TopDocs)))
+            
+            
 
-                                        ;(import 'tk.luoxing123.utils.LucenDocIterator)
-(import 'java.io.File)
-(import 'java.util.ArrayList)
 
-
-(import 'tk.luoxing123.utils.LuceneDocIterator)
-(import 'tk.luoxing123.graph.NodeFactory)
-(import 'tk.luoxing123.graph.Node)
-(import 'tk.luoxing123.graph.Graph)
-(import 'tk.luoxing123.corpus.goldCollection)
-(import 'org.apache.lucene.analysis.Analyzer) 
-(import 'org.apache.lucene.analysis.standard.StandardAnalyzer) 
-(import 'org.apache.lucene.document.Document) 
-(import 'org.apache.lucene.document.Field)
-(import 'org.apache.lucene.document.Field$Store)
-(import 'org.apache.lucene.document.LongField) 
-(import 'org.apache.lucene.document.StringField)
-(import 'org.apache.lucene.document.DoubleField)
-(import 'org.apache.lucene.document.TextField) 
-(import 'org.apache.lucene.index.IndexWriter) 
-(import 'org.apache.lucene.index.IndexWriterConfig$OpenMode) 
-(import 'org.apache.lucene.index.IndexWriterConfig)
-(import 'org.apache.lucene.index.Term)
-(import 'org.apache.lucene.store.Directory)
-(import 'org.apache.lucene.store.FSDirectory) 
-(import 'org.apache.lucene.util.Version) 
-(import 'java.io.File)
-(import 'tk.luoxing123.entitylink.MentionFactory)
-(import 'org.apache.commons.io.FileUtils)
-
-(require '[clojure.data.xml :as xml])
 
 (defn words [text] (re-seq #"[a-z]+" (.toLowerCase text)))
 (defn train [features]
-  (reduce (fn [model f] (assoc model f (inc (get model f 1))))
-          {}
-          features))
+  (reduce (fn [model word]
+            (assoc model word (inc (model word 0))))
+          {} features))
 
 
 
-
-
-
-(defn write-document-index [doc-lst directory ]
-  (let [writer (IndexWriter.  (FSDirectory/open directory)
+(defn do-document-index [doc-lst directory ]
+  (with-open [writer (IndexWriter.  (FSDirectory/open directory)
                               (.setOpenMode
                                (IndexWriterConfig. Version/LUCENE_4_9
                                                    (StandardAnalyzer.
                                                     Version/LUCENE_4_9)) 
                                IndexWriterConfig$OpenMode/CREATE ))]
-    (doseq [ doc doc-lst]
-      (.addDocument writer doc ) )
-    (.close writer)))
+    (doseq [doc doc-lst]
+      (.addDocument writer doc ))))
 
 ;(def *reader* (DirectoryReader/open
 ;               (FSDirectory/open  (File. "/home/luoxing/mentions"))))
@@ -82,15 +55,16 @@
 ;;lucene tools 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
+
 (defn seq-document[str]
-  ( iterator-seq  (LuceneDocIterator. str)))
+  (iterator-seq  (LuceneDocIterator. str)))
 
 
 (defn addNode [node writer]
   (.addDocument writer (node->document node)))
 (defn addMention [mention writer]
   (.addDocument writer (mention->document mention)))
-(defn writeToLucene  [lst dir]
+
   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (def docs (take 5  (seq-document "/home/luoxing/mentions")))
@@ -176,10 +150,6 @@
 (def *mentions*
   (iterator-seq
    (MentionFactory/makeMentionIterator  "/home/luoxing/eval")) )
-(import '(org.apache.lucene.search IndexSearcher
-                                   Query
-                                   ScoreDoc
-                                   TopDocs))                            ;
 
 ;import org.apache.lucene.store.Directory;
 

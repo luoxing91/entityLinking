@@ -10,7 +10,10 @@
                  [org.apache.lucene/lucene-suggest "5.1.0"]
                  [cider/cider-nrepl "0.9.0-SNAPSHOT"]
                  [clojurewerkz/titanium "1.0.0-beta1"]
-                 [org.clojure/data.csv "0.1.2"]]
+                 [org.clojure/data.csv "0.1.2"]
+                 [com.taoensso/carmine "2.10.0"]
+                 [com.taoensso/timbre "3.4.0"]
+                 [intervox/clj-progress "0.2.0"]]
   
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
