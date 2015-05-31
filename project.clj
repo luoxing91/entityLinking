@@ -11,9 +11,16 @@
                  [cider/cider-nrepl "0.9.0-SNAPSHOT"]
                  [clojurewerkz/titanium "1.0.0-beta1"]
                  [org.clojure/data.csv "0.1.2"]
+                 [org.clojure/tools.logging "0.2.3"]
                  [com.taoensso/carmine "2.10.0"]
                  [com.taoensso/timbre "3.4.0"]
-                 [intervox/clj-progress "0.2.0"]]
+                 [intervox/clj-progress "0.2.0"]
+                 [aysylu/loom "0.5.0"]
+                 [it.unimi.dsi/webgraph-big "3.3.6"]
+                 [com.taoensso/nippy "2.8.0"]
+                 
+                 [com.googlecode.javaewah/JavaEWAH "1.0.2" ]]
   
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all}}
+  :jvm-opts ["-Xmx3g"])
